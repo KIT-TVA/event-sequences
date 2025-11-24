@@ -1,13 +1,13 @@
 # Automatic Deductive Verification of Event Sequence Properties
 
-This repository contains the [KeY]((https://key-project.org) extension for reasoning about event sequence properties.
+This repository contains the [KeY](https://key-project.org) extension for reasoning about event sequence properties.
 
 ## Experiment Reproduction
 1. Clone the repo:
     ```sh
     git clone https://github.com/KIT-TVA/event-sequences.git
     ```
-2. Open this project in [IntelliJ]().
+2. Open this project in [IntelliJ](https://www.jetbrains.com/de-de/idea/download).
 3. In the topbar next to the run icon, select `Edit Configurations...`
 4. Create a new Gradle configuration and enter `key.ui:run` as a command.
 5. Execute the newly created configuration to start KeY.
