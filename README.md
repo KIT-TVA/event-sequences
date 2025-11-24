@@ -8,7 +8,7 @@ This repository contains the [KeY](https://key-project.org) extension for reason
     git clone https://github.com/KIT-TVA/event-sequences.git
     ```
 2. Open this project in [IntelliJ](https://www.jetbrains.com/de-de/idea/download).
-3. In the topbar next to the run icon, select `Edit Configurations...`
+3. In the topbar, select `Current File -> Edit Configurations...`
 4. Create a new Gradle configuration and enter `key.ui:run` as a command.
 5. Execute the newly created configuration to start KeY.
 6. Select `File -> Load...`
