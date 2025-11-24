@@ -1,4 +1,3 @@
-//import java.util.UUID;
 import java.util.List;
 import java.util.*;
 
@@ -54,7 +53,6 @@ class Casino {
 
     //@ invariant State.BET_PLACED != null && state.GAME_AVAILABLE != null && state.IDLE != null && Coin.HEADS != null && Coin.TAILS != null;
 
-    // Proven
     /*@ public normal_behavior
       @ requires operator != null && player != null;
       @ ensures this.operator == operator && this.player == player && this.state == State.IDLE && this.pot == 0 && this.bet == 0 && this.hashedNumber == -1;
@@ -85,12 +83,11 @@ class Casino {
       @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_placeBet_int_Coin, TRUE))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_removeFromPot_int, TRUE))\then(TRUE)\else(FALSE))))*);
       @ assignable \everything;
       @*/
-    public void SAFE_start1(int bet, int amount, Coin guess) {
+    public void SEC_start1(int bet, int amount, Coin guess) {
         removeFromPot(amount);
         placeBet(bet, guess);
     }
 
-    //eventSeq(event(decideBet, state == State.BET\_PLACED \&\& sender == operator \&\& hashedNumber == secretNumber, event(createGame, bet > 0))
     /*@ public normal_behavior
       @ requires hashedNumber > 0 && bet > 0;
       @ requires operator != null && player != null && player != operator;
@@ -115,7 +112,7 @@ class Casino {
       @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_createGame_int, self.cond2))\then(TRUE)\else(FALSE))))*);
       @ assignable \everything;
       @*/
-    public void SAFE_start2(int secretNumber, int hashedNumber) {
+    public void SEC_start2(int secretNumber, int hashedNumber) {
         this.hashedNumber = hashedNumber;
         this.state = State.BET_PLACED;
         this.sender = this.operator;
@@ -127,10 +124,6 @@ class Casino {
         createGame(hashedNumber);
     }
 
-    // ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_removeFromPot_Address_int, TRUE))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_placeBet_Address_int_Coin, TRUE))\then(TRUE)\else(FALSE))))*); // Works: Can be verified
-    // ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_placeBet_Address_int_Coin, TRUE))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_removeFromPot_Address_int, TRUE))\then(TRUE)\else(FALSE))))*); // Works: Can not be verfied
-    // ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_placeBet_Address_int_Coin, TRUE))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_removeFromPot_Address_int, TRUE))\then(TRUE)\else(FALSE))))*); // Works: Can not be verfied
-    // ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_placeBet_Address_int_Coin, TRUE))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_removeFromPot_Address_int, TRUE))\then(TRUE)\else(FALSE))))*); // Works: Can not be verfied
     /*@ public normal_behavior
       @ requires operator != null && player != null && money > 0 && player != operator;
       @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_createGame_int, self.cond2))\then(TRUE)\else(FALSE))))*);
@@ -150,7 +143,6 @@ class Casino {
         return true;
     }
 
-    // Proven
     /*
        Transfer money from an address. The money is just added to the pot and this abstract method
        simply reflects the transfer call from the original Casino contract. It has no effect on
@@ -178,7 +170,6 @@ class Casino {
        return true;
     }
 
-    // Proven
     // Remove money from pot
     /*@ public normal_behavior
       @ requires sender != null && operator != null && amount > 0 && State.BET_PLACED != null;
@@ -196,7 +187,6 @@ class Casino {
         return true;
     }
 
-    // Proven
     // Operator opens a bet.
     /*@ public normal_behavior
       @ requires sender != null && newHashedNumber > 0;
@@ -213,7 +203,6 @@ class Casino {
         return true;
     }
 
-    // Proven
     // Player places a bet
     /*@ public normal_behavior
       @ requires sender != null && value > 0 && senderGuess != null;
@@ -232,7 +221,6 @@ class Casino {
         return true;
     }
 
-    // Proven
     // Operator resolves a bet
     /*@ public normal_behavior
       @ requires sender != null && player != null && secretNumber > 0 && bet > 0;

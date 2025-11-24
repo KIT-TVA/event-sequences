@@ -1,4 +1,4 @@
-public  class Client {
+public class Client {
 	private /*@spec_public@*/ /*@non_null*/ String name;
 	private /*@spec_public@*/ int id;
 	private /*@spec_public@*/ static Client[] clients;
@@ -509,8 +509,8 @@ public  class Client {
 		return forwardReceiver;
 	}
 
-	private boolean cond1;
-	private boolean cond2;
+	private boolean /*@spec_public*/ cond1;
+	private boolean /*@spec_public*/ cond2;
 	/*@
 	  @ public normal_behavior
 	  @ requires client != null && msg != null && msg.isEncrypted == true && cond1 == false && cond2 == false;
@@ -539,7 +539,7 @@ public  class Client {
 	  @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Client_decrypt_Email_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Client_forward_Client_Email, self.cond2))\then(TRUE)\else(FALSE))))*);
 	  @ assignable msg.isEncrypted, msg.encryptionKey, msg.isForwarded, msg.isDelivered, msg.to, msg.from, cond1, cond2;
 	  @*/
-	private void SAFE_incoming_Decrypt_Forward(Client client, Email msg) {
+	private void SEC_incoming_Decrypt_Forward(Client client, Email msg) {
 		int privkey = client.getPrivateKey();
 		if (privkey != 0 && msg.isEncrypted()) {
 			cond1 = msg.isEncrypted() == true;

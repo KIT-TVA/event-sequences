@@ -50,16 +50,10 @@ public class MethodLDT extends LDT {
         }
     }
 
-    /*
-    public void addMethodConstant(Services services, JFunction methodConstant) {
-        if (methodNameConstants.keySet().stream().filter(mnc -> mnc.equals(methodConstant)).anyMatch()) return;
-        methodNameConstants.p
-    }*/
-
     /**
      * Constructs a JFunction for a given MethodDeclaration methDecl through custom encoding.
      * Since we want a different MethodId for every overload, we need to encode the parameters too.
-     * Encoding: . -> _ | :: -> # | $param1_param2_...
+     * Encoding: . -> _ | :: -> _ | $param1_param2_...
      * E.g., given the method java.lang.Object::equals  Name("java_lang_Object#equals$java_lang_Object")
      *
      * @param containerType The container containing mappings from java types to KeY logic sorts.
@@ -77,7 +71,6 @@ public class MethodLDT extends LDT {
         final String methodName = methDecl.getName();
         final Name newMethodId;
         newMethodId = constructMethodIdentifier(fullTypeName, methodName, constructParams(methDecl.getParameters()));
-        System.out.println(newMethodId);
         final JFunction method = new JFunction(newMethodId, services.getNamespaces().sorts().lookup("MethodId"), true, false);
         if (methodConstantExists(newMethodId)) {
             return false;
