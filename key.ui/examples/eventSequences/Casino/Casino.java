@@ -72,7 +72,7 @@ class Casino {
       @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_placeBet_int_Coin, TRUE))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_removeFromPot_int, TRUE))\then(TRUE)\else(FALSE))))*);
       @ assignable \everything;
       @*/
-    public void ESV_start1(int bet, int amount, Coin guess) {
+    public void ESV_game1(int bet, int amount, Coin guess) {
         placeBet(bet, guess);
         removeFromPot(amount);
     }
@@ -83,7 +83,7 @@ class Casino {
       @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_placeBet_int_Coin, TRUE))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_removeFromPot_int, TRUE))\then(TRUE)\else(FALSE))))*);
       @ assignable \everything;
       @*/
-    public void SEC_start1(int bet, int amount, Coin guess) {
+    public void SEC_game1(int bet, int amount, Coin guess) {
         removeFromPot(amount);
         placeBet(bet, guess);
     }
@@ -94,7 +94,7 @@ class Casino {
       @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_createGame_int, self.cond2))\then(TRUE)\else(FALSE))))*);
       @ assignable \everything;
       @*/
-    public void ESV_start2(int secretNumber, int hashedNumber) {
+    public void ESV_game2(int secretNumber, int hashedNumber) {
         this.hashedNumber = hashedNumber;
         this.state = State.BET_PLACED;
         this.sender = this.operator;
@@ -112,7 +112,7 @@ class Casino {
       @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_createGame_int, self.cond2))\then(TRUE)\else(FALSE))))*);
       @ assignable \everything;
       @*/
-    public void SEC_start2(int secretNumber, int hashedNumber) {
+    public void SEC_game2(int secretNumber, int hashedNumber) {
         this.hashedNumber = hashedNumber;
         this.state = State.BET_PLACED;
         this.sender = this.operator;
@@ -125,22 +125,63 @@ class Casino {
     }
 
     /*@ public normal_behavior
-      @ requires operator != null && player != null && money > 0 && player != operator;
-      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_createGame_int, self.cond2))\then(TRUE)\else(FALSE))))*);
+      @ requires amount > 0 && bet > 0 && secretNumber > 0 && secret != guess;
+      @ requires operator != null && player != null && player != operator;
+      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_transfer_Address_int, self.cond2))\then(TRUE)\else(FALSE))))*);
       @ assignable \everything;
       @*/
-    public boolean triggerSecondEventSequence(Address operator, Address player, int money, Coin guess) {
-        setupNewGame(operator, player);
-        state = State.BET_PLACED;
-        sender = operator;
-        hashedNumber = 1;
-        int secretNumber = 1;
-        bet = 10;
-        cond1 = state == State.BET_PLACED && sender == operator && hashedNumber == secretNumber;
+    public void ESV_game3(int secretNumber, int amount) {
+        Address transferee = this.player;
+        cond1 = secret != guess;
         decideBet(secretNumber);
-        cond2 = bet < 0;
-        createGame(10);
-        return true;
+        cond2 = bet > 0 && transferee == player;
+        transfer(transferee, amount);
+    }
+
+    /*@ public normal_behavior
+      @ requires amount > 0 && bet > 0 && secretNumber > 0 && secret != guess;
+      @ requires operator != null && player != null && player != operator;
+      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_transfer_Address_int, self.cond2))\then(TRUE)\else(FALSE))))*);
+      @ assignable \everything;
+      @*/
+    public void SEC_game3(int secretNumber, int amount) {
+        Address transferee = this.operator;
+        cond1 = secret != guess;
+        decideBet(secretNumber);
+        cond2 = bet > 0 && transferee == player;
+        transfer(transferee, amount);
+    }
+
+    /*@ public normal_behavior
+      @ requires newHashedNumber > 0 && newHashedNumber != hashedNumber && amount > 0 && bet > 0 && secretNumber > 0 && secret == guess;
+      @ requires operator != null && player != null && player != operator;
+      @ requires sender == operator && state == State.IDLE;
+      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_transfer_Address_int, self.cond2))\then(TRUE)\else(FALSE))))*);
+      @ assignable \everything;
+      @*/
+    public void ESV_game4(int secretNumber, int newHashedNumber, int amount) {
+        Address transferee = this.operator;
+        cond1 = secret == guess;
+        decideBet(secretNumber);
+        cond2 = bet > 0 && transferee == operator;
+        transfer(transferee, amount);
+    }
+
+    /*@ public normal_behavior
+      @ requires newHashedNumber > 0 && newHashedNumber != hashedNumber && amount > 0 && bet > 0 && secretNumber > 0 && secret == guess;
+      @ requires operator != null && player != null && player != operator;
+      @ requires sender == operator && state == State.IDLE;
+      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_transfer_Address_int, self.cond2))\then(TRUE)\else(FALSE))))*);
+      @ assignable \everything;
+      @*/
+    public void SEC_game4(int secretNumber, int newHashedNumber, int amount) {
+        Address transferee = this.operator;
+        cond1 = secret == guess;
+        decideBet(secretNumber);
+        createGame(newHashedNumber);
+        setupNewGame(operator, player);
+        cond2 = bet > 0 && transferee == operator;
+        transfer(transferee, amount);
     }
 
     /*
