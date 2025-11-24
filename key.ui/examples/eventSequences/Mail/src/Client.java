@@ -517,7 +517,7 @@ public class Client {
 	  @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Client_decrypt_Email_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Client_forward_Client_Email, self.cond2))\then(TRUE)\else(FALSE))))*);
 	  @ assignable msg.isEncrypted, msg.encryptionKey, msg.isForwarded, msg.isDelivered, msg.to, msg.from, cond1, cond2;
 	  @*/
-	private void ESV_incoming_Decrypt_Forward(Client client, Email msg) {
+	private void ESV_incoming(Client client, Email msg) {
 		int privkey = client.getPrivateKey();
 		if (privkey != 0 && msg.isEncrypted()) {
 			cond1 = msg.isEncrypted() == true;
@@ -539,7 +539,7 @@ public class Client {
 	  @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Client_decrypt_Email_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Client_forward_Client_Email, self.cond2))\then(TRUE)\else(FALSE))))*);
 	  @ assignable msg.isEncrypted, msg.encryptionKey, msg.isForwarded, msg.isDelivered, msg.to, msg.from, cond1, cond2;
 	  @*/
-	private void SEC_incoming_Decrypt_Forward(Client client, Email msg) {
+	private void SEC_incoming(Client client, Email msg) {
 		int privkey = client.getPrivateKey();
 		if (privkey != 0 && msg.isEncrypted()) {
 			cond1 = msg.isEncrypted() == true;
@@ -564,7 +564,7 @@ public class Client {
 	  @ ensures client.privateKey != 0 && \old(msg).isEncrypted ==> !msg.isEncrypted;
 	  @ assignable msg.isEncrypted, msg.encryptionKey, msg.isForwarded, msg.isDelivered, msg.to, msg.from;
 	  @*/
-	private void BASE_incoming_Decrypt_Forward(Client client, Email msg) {
+	private void BASE_incoming(Client client, Email msg) {
 		int privkey = client.getPrivateKey();
 		if (privkey != 0 && msg.isEncrypted()) {
 			decrypt(msg, privkey);
