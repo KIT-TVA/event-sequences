@@ -127,61 +127,61 @@ class Casino {
     /*@ public normal_behavior
       @ requires amount > 0 && bet > 0 && secretNumber > 0 && secret != guess;
       @ requires operator != null && player != null && player != operator;
-      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_transfer_Address_int, self.cond2))\then(TRUE)\else(FALSE))))*);
+      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_removeFromPot_int, self.cond2))\then(TRUE)\else(FALSE))))*);
       @ assignable \everything;
       @*/
     public void ESV_game3(int secretNumber, int amount) {
-        Address transferee = this.player;
+        Address sender = this.player;
         cond1 = secret != guess;
         decideBet(secretNumber);
-        cond2 = bet > 0 && transferee == player;
-        transfer(transferee, amount);
+        cond2 = bet > 0 && sender == player;
+        removeFromPot(amount);
     }
 
     /*@ public normal_behavior
       @ requires amount > 0 && bet > 0 && secretNumber > 0 && secret != guess;
       @ requires operator != null && player != null && player != operator;
-      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_transfer_Address_int, self.cond2))\then(TRUE)\else(FALSE))))*);
+      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_removeFromPot_int, self.cond2))\then(TRUE)\else(FALSE))))*);
       @ assignable \everything;
       @*/
     public void SEC_game3(int secretNumber, int amount) {
-        Address transferee = this.operator;
+        Address sender = this.operator;
         cond1 = secret != guess;
         decideBet(secretNumber);
-        cond2 = bet > 0 && transferee == player;
-        transfer(transferee, amount);
+        cond2 = bet > 0 && sender == player;
+        removeFromPot(amount);
     }
 
     /*@ public normal_behavior
       @ requires newHashedNumber > 0 && newHashedNumber != hashedNumber && amount > 0 && bet > 0 && secretNumber > 0 && secret == guess;
       @ requires operator != null && player != null && player != operator;
       @ requires sender == operator && state == State.IDLE;
-      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_transfer_Address_int, self.cond2))\then(TRUE)\else(FALSE))))*);
+      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_removeFromPot_int, self.cond2))\then(TRUE)\else(FALSE))))*);
       @ assignable \everything;
       @*/
     public void ESV_game4(int secretNumber, int newHashedNumber, int amount) {
-        Address transferee = this.operator;
+        Address sender = this.operator;
         cond1 = secret == guess;
         decideBet(secretNumber);
-        cond2 = bet > 0 && transferee == operator;
-        transfer(transferee, amount);
+        cond2 = bet > 0 && sender == operator;
+        removeFromPot(amount);
     }
 
     /*@ public normal_behavior
       @ requires newHashedNumber > 0 && newHashedNumber != hashedNumber && amount > 0 && bet > 0 && secretNumber > 0 && secret == guess;
       @ requires operator != null && player != null && player != operator;
       @ requires sender == operator && state == State.IDLE;
-      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_transfer_Address_int, self.cond2))\then(TRUE)\else(FALSE))))*);
+      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_removeFromPot_int, self.cond2))\then(TRUE)\else(FALSE))))*);
       @ assignable \everything;
       @*/
     public void SEC_game4(int secretNumber, int newHashedNumber, int amount) {
-        Address transferee = this.operator;
+        Address sender = this.operator;
         cond1 = secret == guess;
         decideBet(secretNumber);
         createGame(newHashedNumber);
         setupNewGame(operator, player);
-        cond2 = bet > 0 && transferee == operator;
-        transfer(transferee, amount);
+        cond2 = bet > 0 && sender == operator;
+        removeFromPot(amount);
     }
 
     /*
