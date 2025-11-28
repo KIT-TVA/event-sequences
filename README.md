@@ -15,7 +15,7 @@ This repository contains the [KeY](https://key-project.org) extension for reason
 7. Navigate to `key/key.ui/examples/eventSequences` to find systems used for evaluation.
 8. Select a Java source file that contains event sequences, e.g., `Mail/src/Client.java`.
 9. Select a proof target by prefix:
-    - BASE --- functional contract.
+    - BASE --- Functional contract.
     - ESV --- (E)vent (S)sequence (V)iolation; unsafe implementation that violates an event sequence.
     - SEC --- (Sec)ure; Safe implementation that does not violate an event sequence.
 10. Select `Java verif. std.` as Proof Search Strategy and increase `Max. Rule Applications` to `1M`.
