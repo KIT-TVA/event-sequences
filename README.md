@@ -18,7 +18,7 @@ This repository contains the [KeY](https://key-project.org) extension for reason
     - BASE --- Functional contract.
     - ESV --- (E)vent (S)sequence (V)iolation; unsafe implementation that violates an event sequence.
     - SEC --- (Sec)ure; Safe implementation that does not violate an event sequence.
-10. Select `Java verif. std.` as Proof Search Strategy and increase `Max. Rule Applications` to `1M`.
+10. Select `Java verif. std.` as Proof Search Strategy, disable `One Step Simplification`, and increase `Max. Rule Applications` to `1M`.
 11. Navigate to `Options -> Settings -> Taclet Options` and enable the radio box for `events`.
 12. Run the proof.
 
