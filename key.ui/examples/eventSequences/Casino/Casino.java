@@ -195,7 +195,7 @@ class Casino {
         Address sender = this.operator;
         cond1 = secret == guess;
         decideBet(secretNumber);
-        cond2 = bet > 0 && sender == operator;
+        cond2 = sender == operator;
         removeFromPot(amount);
         createGame(newHashedNumber);
     }
@@ -211,7 +211,7 @@ class Casino {
         Address sender = this.operator;
         cond1 = secret == guess;
         decideBet(secretNumber);
-        cond2 = bet > 0 && sender == operator;
+        cond2 = sender == operator;
         removeFromPot(amount);
         //createGame(newHashedNumber);
     }
