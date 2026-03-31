@@ -184,6 +184,38 @@ class Casino {
         removeFromPot(amount);
     }
 
+    /*@ public normal_behavior
+      @ requires newHashedNumber > 0 && newHashedNumber != hashedNumber && amount > 0 && bet > 0 && secretNumber > 0 && secret == guess;
+      @ requires operator != null && player != null && player != operator;
+      @ requires sender == operator && state == State.IDLE;
+      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqConcat(seqSingleton(\if(event(Casino_removeFromPot_int, self.cond2))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_createGame_int, TRUE))\then(TRUE)\else(FALSE)))))*);
+      @ assignable \everything;
+      @*/
+    public void ESV_game5(int secretNumber, int newHashedNumber, int amount) {
+        Address sender = this.operator;
+        cond1 = secret == guess;
+        decideBet(secretNumber);
+        cond2 = bet > 0 && sender == operator;
+        removeFromPot(amount);
+        createGame(newHashedNumber);
+    }
+
+    /*@ public normal_behavior
+      @ requires newHashedNumber > 0 && newHashedNumber != hashedNumber && amount > 0 && bet > 0 && secretNumber > 0 && secret == guess;
+      @ requires operator != null && player != null && player != operator;
+      @ requires sender == operator && state == State.IDLE;
+      @ ensures (*!eventSeq(seqConcat(seqSingleton(\if(event(Casino_decideBet_int, self.cond1))\then(TRUE)\else(FALSE)), seqConcat(seqSingleton(\if(event(Casino_removeFromPot_int, self.cond2))\then(TRUE)\else(FALSE)), seqSingleton(\if(event(Casino_createGame_int, TRUE))\then(TRUE)\else(FALSE)))))*);
+      @ assignable \everything;
+      @*/
+    public void SEC_game5(int secretNumber, int newHashedNumber, int amount) {
+        Address sender = this.operator;
+        cond1 = secret == guess;
+        decideBet(secretNumber);
+        cond2 = bet > 0 && sender == operator;
+        removeFromPot(amount);
+        //createGame(newHashedNumber);
+    }
+
     /*
        Transfer money from an address. The money is just added to the pot and this abstract method
        simply reflects the transfer call from the original Casino contract. It has no effect on
